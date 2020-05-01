@@ -1,0 +1,111 @@
+<vex-secondary-toolbar current="Dashboard">
+    <vex-breadcrumbs [crumbs]="['Dashboard']" class="flex-auto"></vex-breadcrumbs>
+    
+    <button class="ml-2" color="primary" mat-icon-button type="button">
+        <mat-icon [icIcon]="icMoreVert"></mat-icon>
+    </button>
+</vex-secondary-toolbar>
+      
+<div class="p-gutter" vexContainer>
+
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
+        
+        <div @fadeInUp class="card" fxFlex="auto">
+            <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                <h2 class="title m-0">Current Shipments</h2>
+            </div>
+        
+            <div class="px-6 py-4" fxLayout="column">
+                <mat-card *ngFor="let shipment of currentShipments">
+                    {{ shipment.itemName }} 
+                    {{ shipment.scheduledDate }} 
+                    {{ shipment.scheduledTime }}
+                </mat-card>
+            </div>
+        </div>
+
+        <div fxLayout="column" fxLayout.lt-md="row" fxLayoutGap="16px">
+            <div @fadeInUp class="card overflow-hidden" fxFlex="auto">
+                <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                    <h2 class="title m-0">Next Scheduled Pickup: &nbsp;&nbsp;</h2>
+                    <div *ngFor="let pickup of currentPickups; first as isFirst">
+                        <div *ngIf="isFirst">
+                            <h3>{{ pickup.itemName }} 
+                            {{ pickup.scheduledDate }} 
+                            {{ pickup.scheduledTime }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div @fadeInUp class="card overflow-hidden" fxFlex="auto">
+                <div class="px-6 py-4 border-b" fxLayout="row" fxLayoutAlign="start center">
+                    <h2 class="title m-0">Schedule Pickup</h2>
+                </div>
+            
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <div class="px-6 py-4" fxLayout="column">
+                        <mat-form-field>
+                            <mat-label>Item Name</mat-label>
+                            <input matInput required formControlName="itemName">
+                        </mat-form-field>
+                        
+                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Pickup Address</mat-label>
+                                <input matInput required formControlName="pickupAddress">
+                                <mat-icon [icIcon]="icHome" matSuffix></mat-icon>
+                            </mat-form-field>
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Shipping Address</mat-label>
+                                <input matInput required formControlName="shippingAddress">
+                                <mat-icon [icIcon]="icPlace" matSuffix></mat-icon>
+                            </mat-form-field>
+                        </div>
+                
+                        <mat-form-field>
+                            <mat-label>Shipping Method</mat-label>
+                            <mat-select required formControlName="shippingOption">
+                                <mat-option value="UPS Priority">UPS Priority</mat-option>
+                                <mat-option value="1 Day Shipping">1 Day Shipping</mat-option>
+                                <mat-option value="3 Day Shipping">3 Day Shipping</mat-option>
+                                <mat-option value="Postal Service (USPS)">Postal Service (USPS)</mat-option>
+                            </mat-select>
+                            <mat-icon [icIcon]="icLocalShipping" matSuffix></mat-icon>
+                        </mat-form-field>
+                
+                        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="16px" fxLayoutGap.lt-sm="0">
+                            <mat-form-field>
+                                <mat-label>Date</mat-label>
+                                <input (click)="formDatepickerRef.open()"
+                                        (focus)="formDatepickerRef.open()"
+                                        [matDatepicker]="formDatepickerRef"
+                                        matInput
+                                        required
+                                        readonly
+                                        formControlName="scheduledDate">
+                                <mat-datepicker-toggle [for]="formDatepickerRef" matSuffix></mat-datepicker-toggle>
+                                <mat-hint>Can be Today</mat-hint>
+                                <mat-datepicker #formDatepickerRef></mat-datepicker>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex="auto">
+                                <mat-label>Time of Day</mat-label>
+                                <input matInput required formControlName="scheduledTime">
+                                <mat-icon [icIcon]="icAccessTime" matSuffix></mat-icon>
+                                <mat-hint>You can enter a range</mat-hint>
+                            </mat-form-field>
+                            
+                        </div>
+                
+                        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="8px">
+                            <button color="primary" mat-raised-button type="submit" [disabled]="!form.valid" (click)="openDialog()">SUBMIT</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+

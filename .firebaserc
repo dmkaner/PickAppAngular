@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "pickapp-4144e": {
+      "hosting": {
+        "vex": [
+          "pickapp-4144e"
+        ]
+      }
+    }
+  }
+}
