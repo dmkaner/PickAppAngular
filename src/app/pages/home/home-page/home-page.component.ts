@@ -12,6 +12,9 @@ import { fadeInUp400ms } from '../../../../@vex/animations/fade-in-up.animation'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import icClose from '@iconify/icons-ic/twotone-close';
 
+import { Order, tableSalesData } from './table-sales-data';
+import { TableColumn } from '../../../../@vex/interfaces/table-column.interface';
+
 import {
   FormBuilder,
   FormGroup,
@@ -42,6 +45,56 @@ export class HomePageComponent implements OnInit {
 
   currentPickups: Pickup[];
   currentShipments: Pickup[];
+
+  tableData = tableSalesData;
+  // tableColumns: TableColumn<Order>[] = [
+  //   {
+  //     label: '',
+  //     property: 'status',
+  //     type: 'badge'
+  //   },
+  //   {
+  //     label: 'PRODUCT',
+  //     property: 'name',
+  //     type: 'text'
+  //   },
+  //   {
+  //     label: '$ PRICE',
+  //     property: 'price',
+  //     type: 'text',
+  //     cssClasses: ['font-medium']
+  //   },
+  //   {
+  //     label: 'DATE',
+  //     property: 'timestamp',
+  //     type: 'text',
+  //     cssClasses: ['text-secondary']
+  //   }
+  // ];
+  tableColumns: TableColumn<Pickup>[] = [
+    {
+      label: 'STATUS',
+      property: 'status',
+      type: 'badge'
+    },
+    {
+      label: 'ITEM',
+      property: 'itemName',
+      type: 'text'
+    },
+    {
+      label: 'Tracking #',
+      property: 'trackingNumber',
+      type: 'text',
+      cssClasses: ['font-medium']
+    },
+    {
+      label: 'DATE',
+      property: 'scheduledDate',
+      type: 'text',
+      cssClasses: ['text-secondary']
+    }
+  ];
 
   icAccessTime = icAccessTime;
   icLocalShipping = icLocalShipping;
@@ -77,6 +130,8 @@ export class HomePageComponent implements OnInit {
     this.subShipment = this.pickupService
                   .getShipments()
                   .subscribe(currentShipments => (this.currentShipments = currentShipments))
+
+    this.tableData = this.currentPickups;
   }
 
   ngOnDestroy() {
